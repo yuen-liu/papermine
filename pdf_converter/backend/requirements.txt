@@ -1,3 +1,5 @@
+torch
+transformers
 fastapi
 uvicorn
 python-multipart
