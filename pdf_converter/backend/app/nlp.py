@@ -5,7 +5,7 @@ from transformers import pipeline
 import spacy
 
 # Load summarization pipeline (small model for speed)
-summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-6-6")
 
 # Load spaCy small English model for keyword extraction
 try:
