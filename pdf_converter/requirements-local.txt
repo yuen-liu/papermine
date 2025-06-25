@@ -1,0 +1,9 @@
+pdfplumber
+pymupdf
+transformers
+torch
+Pillow
+scikit-learn
+flask
+flask-cors
+gunicorn 
