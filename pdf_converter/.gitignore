@@ -70,3 +70,4 @@ Pipfile.lock
 
 # System
 Thumbs.db 
+.vercel
