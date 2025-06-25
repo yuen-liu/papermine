@@ -2,14 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "main_vercel.py",
+      "src": "api/upload.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "api/upload.py"
+    },
+    {
       "src": "/(.*)",
-      "dest": "main_vercel.py"
+      "dest": "/index.html"
     }
   ]
 } 
