@@ -19,6 +19,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/")
+def read_root():
+    return {"message": "Backend running!"}
+
+
 @app.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
     contents = await file.read()
