@@ -1,0 +1,5 @@
+pdfplumber
+pymupdf
+Pillow
+flask
+flask-cors 

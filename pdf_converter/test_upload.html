@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Converter Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .upload-section {
+            border: 2px dashed #ccc;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 20px 0;
+            background-color: #fafafa;
+        }
+        .upload-section:hover {
+            border-color: #007bff;
+            background-color: #f0f8ff;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 PDF Converter Test</h1>
+        
+        <div class="upload-section">
+            <h3>Upload a PDF file to test the converter</h3>
+            <input type="file" id="pdfFile" accept=".pdf" />
+            <br>
+            <button onclick="uploadPDF()" id="uploadBtn">Convert PDF</button>
+        </div>
+
+        <div class="loading" id="loading">
+            <p>🔄 Processing PDF... Please wait...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <div class="results" id="results">
+            <h3>📊 Conversion Results</h3>
+            <div>
+                <h4>📝 Extracted Text:</h4>
+                <pre id="textResult"></pre>
+            </div>
+            <div>
+                <h4>📊 Tables:</h4>
+                <pre id="tablesResult"></pre>
+            </div>
+            <div>
+                <h4>🖼️ Images:</h4>
+                <pre id="imagesResult"></pre>
+            </div>
+            <div>
+                <h4>🧠 NLP Analysis:</h4>
+                <pre id="nlpResult"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function uploadPDF() {
+            const fileInput = document.getElementById('pdfFile');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const success = document.getElementById('success');
+            const results = document.getElementById('results');
+
+            if (!fileInput.files[0]) {
+                showError('Please select a PDF file first.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Show loading state
+            uploadBtn.disabled = true;
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            success.style.display = 'none';
+            results.style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:8080/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess('PDF processed successfully!');
+                    displayResults(data);
+                } else {
+                    showError(`Error: ${data.error || 'Unknown error occurred'}`);
+                }
+            } catch (err) {
+                showError(`Network error: ${err.message}`);
+            } finally {
+                uploadBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            const error = document.getElementById('error');
+            error.textContent = message;
+            error.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            const success = document.getElementById('success');
+            success.textContent = message;
+            success.style.display = 'block';
+        }
+
+        function displayResults(data) {
+            document.getElementById('textResult').textContent = data.text || 'No text extracted';
+            document.getElementById('tablesResult').textContent = JSON.stringify(data.tables || [], null, 2);
+            document.getElementById('imagesResult').textContent = JSON.stringify(data.images || [], null, 2);
+            document.getElementById('nlpResult').textContent = JSON.stringify(data.nlp || {}, null, 2);
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html> 

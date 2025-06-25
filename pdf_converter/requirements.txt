@@ -4,4 +4,6 @@ transformers
 torch
 Pillow
 scikit-learn
-flask 
+flask
+flask-cors
+gunicorn 
