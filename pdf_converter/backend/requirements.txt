@@ -1,3 +1,5 @@
+torch==2.7.1+cpu
+-f https://download.pytorch.org/whl/cpu/torch_stable.html
 transformers
 fastapi
 uvicorn
@@ -9,5 +11,3 @@ transformers
 pillow
 opencv-python
 scikit-learn 
-torch==2.2.2+cpu
--f https://download.pytorch.org/whl/cpu/torch_stable.html
