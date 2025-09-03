@@ -1,8 +1,6 @@
 # Papermine
 your friendly neighborhood PDF Research Paper Extractor because curating data is hard...
 
-**NOTE: run locally. I am broke so I can't afford to host my backend on Render rip
-
 A modular full-stack web application to extract and analyze research papers in PDF format. Upload a PDF and get:
 - **Summary** (NLP-powered)
 - **Keywords**
